@@ -1,0 +1,6 @@
+node_modules
+dist
+
+src/schema/index.ts
+dist
+test.js
