@@ -1,3 +1,4 @@
+import axios from 'axios';
 export interface HttpClient {
   get<R>(input: GetInput): Promise<R>;
   post<T, R>(input: PostInput<T>): Promise<R>;
@@ -12,7 +13,7 @@ export enum RequestMethod {
 export interface HttpRequest<T> {
   url: string;
   method: RequestMethod;
-  body?: T;
+  data?: T;
   headers?: Record<string, string | number>;
 }
 export interface RequestInput {
@@ -23,8 +24,20 @@ export interface GetInput extends RequestInput {
   params?: Record<string, string | number>;
 }
 export interface PostInput<T> extends RequestInput {
-  body: T;
+  data: T;
 }
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const defaultHttpClient: HttpClient = {};
+
+export const defaultHttpClient: HttpClient = {
+  get: async (input: GetInput) =>
+    axios({
+      method: 'GET',
+      ...input,
+    }).then(({ data }) => data),
+  post: async <T>(input: PostInput<T>) =>
+    axios({
+      method: 'POST',
+      ...input,
+    }).then(({ data }) => data),
+  makeRequest: async <T>(input: HttpRequest<T>) =>
+    axios(input).then(({ data }) => data),
+};

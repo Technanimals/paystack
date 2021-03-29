@@ -39,16 +39,18 @@ export class AuthService {
 
     return `${endpoint}/${path}`;
   }
-  public makeRequest<T>(input: AuthRequest<T>) {
-    const { method, path, body } = input;
+  public async makeRequest<T, R>(input: AuthRequest<T>) {
+    const { method, path, data } = input;
     const { headers } = this;
     const url = this.getURL(path);
-
-    return this._httpClient.makeRequest({
+    console.log({
+      url,
+    });
+    return this._httpClient.makeRequest<T, R>({
       url,
       headers,
       method,
-      body,
+      data,
     });
   }
 }
@@ -56,7 +58,7 @@ export class AuthService {
 interface AuthRequest<T> {
   path: string;
   method: RequestMethod;
-  body?: T;
+  data?: T;
 }
 export interface AuthConfig {
   clientSecret: string;
