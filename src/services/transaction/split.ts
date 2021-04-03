@@ -4,11 +4,12 @@ import {
   Payment,
   Currency,
   PageParams,
-} from './paystack';
+} from '../paystack';
 
-export class TransactionService extends PaystackService {
+export class TransactionSplitService extends PaystackService {
   public constructor(config: ServiceConfig) {
     super(config);
+    this._basePath = 'split';
   }
   public initialize = this.getPostHandler<InitializeInput, InitializeResponse>(
     'initialize'

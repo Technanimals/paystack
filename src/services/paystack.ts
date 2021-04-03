@@ -8,6 +8,7 @@ export interface ServiceConfig {
 
 export class PaystackService {
   public authService: AuthService;
+  public _basePath?: string;
   public constructor(config: ServiceConfig) {
     const { authService } = config;
     this.authService = authService;
@@ -15,8 +16,9 @@ export class PaystackService {
 
   public get basePath() {
     const { name } = this.constructor;
+    const { _basePath: basePath } = this;
 
-    return name.replace('Service', '').toLowerCase();
+    return basePath || name.replace('Service', '').toLowerCase();
   }
 
   public getPath<T>(data: T, resource?: string) {
@@ -58,10 +60,17 @@ export class PaystackService {
   public getGetHandler<T, P = unknown, R = unknown>(resource = '') {
     return (input: GetHandlerInput<T, P>) => {
       const { data, params = {} } = input;
+      const handlerInput = {
+        ...params,
+        ...data,
+      } as T;
       const queryParams = querystring.stringify(params);
       const requestPath = queryParams ? `${resource}?${queryParams}` : resource;
 
-      return this.getHandler<T, R>(RequestMethod.GET, requestPath)(data);
+      return this.getHandler<T, R>(
+        RequestMethod.GET,
+        requestPath
+      )(handlerInput);
     };
   }
 }

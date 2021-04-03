@@ -10,7 +10,7 @@
     "coverage:watch": "jest --watchAll --coverage true --coverageReporters html --no-cache",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "build": "rm -rf dist && tsc -p ."
+    "build": "rm -rf dist && ttsc -p ."
   },
   "devDependencies": {
     "@types/jest": "~26.0.21",
@@ -29,7 +29,9 @@
     "ts-jest": "~26.5.4",
     "ts-node": "~9.1.1",
     "tsconfig-paths": "~3.9.0",
-    "typescript": "~4.2.3"
+    "ttypescript": "~1.5.12",
+    "typescript": "~4.2.3",
+    "typescript-transform-paths": "~2.2.3"
   },
   "dependencies": {
     "axios": "~0.21.1"

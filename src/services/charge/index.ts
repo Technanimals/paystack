@@ -3,11 +3,16 @@ import {
   PaystackService,
   PaystackMetadata,
   PaymentChannels,
-} from './paystack';
+} from 'services/paystack';
+
+import { BulkChargeService } from './bulk';
 
 export class ChargeService extends PaystackService {
+  public bulk: BulkChargeService;
   public constructor(config: ServiceConfig) {
     super(config);
+    const { authService } = config;
+    this.bulk = new BulkChargeService({ authService });
   }
   public create = this.getPostHandler<CreateInput>();
   public submitPin = this.getPostHandler<SubmitPinInput>('submit_pin');
