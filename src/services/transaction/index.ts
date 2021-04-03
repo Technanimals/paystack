@@ -35,9 +35,10 @@ export class TransactionService extends PaystackService {
 
   public totals = (params: TotalsInput) =>
     this.getGetHandler<ViewTimelineInput>('totals')({ params });
-
+  public export = (params: ExportPrams) =>
+    this.getGetHandler<ExportPrams>('export')({ params });
   public partialDebit = this.getPostHandler<ChargeAuthorizationInput>(
-    'charge_authorization'
+    'partial_debit'
   );
 }
 
@@ -55,6 +56,7 @@ export interface ViewTimelineInput {
 }
 
 export type TotalsInput = PageParams;
+
 export interface InitializeInput extends Payment {
   callback_url?: string;
 }
@@ -75,6 +77,12 @@ export interface ListParams extends PageParams {
   amount: number;
 }
 
+export interface ExportPrams extends ListParams {
+  currency: Currency;
+  settled: boolean;
+  settlement: number;
+  payment_page: number;
+}
 export interface VerifyInput {
   reference: string;
 }

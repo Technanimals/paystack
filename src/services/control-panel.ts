@@ -6,8 +6,9 @@ import {
   PageParams,
 } from 'services/paystack';
 
-export class SubscriptionService extends PaystackService {
+export class ControlPanelService extends PaystackService {
   public constructor(config: ServiceConfig) {
     super(config);
+    this._basePath = 'integration';
   }
 }

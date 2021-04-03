@@ -6,7 +6,7 @@ import {
   PageParams,
 } from 'services/paystack';
 
-export class SubscriptionService extends PaystackService {
+export class MiscellaneousService extends PaystackService {
   public constructor(config: ServiceConfig) {
     super(config);
   }

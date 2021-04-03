@@ -6,8 +6,9 @@ import {
   PageParams,
 } from 'services/paystack';
 
-export class SubscriptionService extends PaystackService {
+export class NubanService extends PaystackService {
   public constructor(config: ServiceConfig) {
     super(config);
+    this._basePath = 'dedicated_account';
   }
 }
