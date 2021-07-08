@@ -14,12 +14,16 @@ export class TransactionService extends PaystackService {
     const { authService } = config;
     this.split = new TransactionSplitService({ authService });
   }
+  /**
+   * Initialize a transaction from your backend
+   */
   public initialize = this.getPostHandler<InitializeInput, InitializeResponse>(
     'initialize'
   );
-  public verify = this.getGetHandler<VerifyInput, InitializeResponse>(
-    'verify/:reference'
-  );
+  public verify = (data: VerifyInput) =>
+    this.getGetHandler<VerifyInput, InitializeResponse>('verify/:reference')({
+      data,
+    });
 
   public list = (params: Partial<ListParams>) =>
     this.getGetHandler<Record<string, unknown>, ListParams>()({ params });
@@ -29,6 +33,10 @@ export class TransactionService extends PaystackService {
 
   public chargeAuthorization = this.getPostHandler<ChargeAuthorizationInput>(
     'charge_authorization'
+  );
+
+  public checkAuthorization = this.getPostHandler<CheckAuthorizationInput>(
+    'check_authorization'
   );
   public viewTimeline = (data: ViewTimelineInput) =>
     this.getGetHandler<ViewTimelineInput>('timeline/:search')({ data });
@@ -87,10 +95,18 @@ export interface VerifyInput {
   reference: string;
 }
 
-export interface ChargeAuthorizationInput {
+export interface AuthorizationInput {
   amount: number;
   email: string;
   authorization_code: string;
+}
+export interface ChargeAuthorizationInput extends AuthorizationInput {
+  currency?: Currency;
+  reference?: string;
+}
+
+export interface CheckAuthorizationInput extends AuthorizationInput {
+  currency?: Currency;
 }
 export interface InitializeResponse {
   authorization_url: string;

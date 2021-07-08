@@ -144,3 +144,5 @@ export interface PageParams {
   from: Date;
   to: Date;
 }
+
+export type EmptyParams = Record<string, unknown>;

@@ -20,10 +20,7 @@ import {
 } from 'services';
 
 import { AuthService } from 'services/auth';
-
-export interface PaystackConfig {
-  clientSecret: string;
-}
+import { getDecrypt } from 'services/crypto';
 
 const services = {
   charge: ChargeService,
@@ -45,7 +42,29 @@ const services = {
   verification: VerificationService,
 };
 
-export interface PaystackClient {
+export function createClient(config: PaystackConfig) {
+  const { clientSecret } = config;
+  const authService = new AuthService({ clientSecret });
+  const decrypt = getDecrypt(clientSecret);
+  const keys = Object.keys(services);
+
+  return keys.reduce(
+    (memo, key) => {
+      // @ts-ignore
+      const Service = services[key];
+
+      return {
+        ...memo,
+        [key]: new Service({
+          authService,
+        }),
+      };
+    },
+    { decrypt }
+  ) as IPaystackClient;
+}
+
+export interface IPaystackClient {
   charge: ChargeService;
   controlPanel: ControlPanelService;
   customer: CustomerService;
@@ -63,22 +82,9 @@ export interface PaystackClient {
   transaction: TransactionService;
   transfer: TransferService;
   verification: VerificationService;
+  decrypt: ReturnType<typeof getDecrypt>;
 }
-export function createClient(config: PaystackConfig) {
-  const { clientSecret } = config;
-  const authService = new AuthService({ clientSecret });
 
-  const keys = Object.keys(services);
-
-  return keys.reduce((memo, key) => {
-    // @ts-ignore
-    const Service = services[key];
-
-    return {
-      ...memo,
-      [key]: new Service({
-        authService,
-      }),
-    };
-  }, {}) as PaystackClient;
+export interface PaystackConfig {
+  clientSecret: string;
 }

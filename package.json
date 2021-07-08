@@ -1,8 +1,12 @@
 {
   "name": "@technanimals/paystack",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.1",
+  "main": "dist/index.js",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "test:once": "jest --bail --passWithNoTests",
     "test": "jest --watch --passWithNoTests --verbose",
