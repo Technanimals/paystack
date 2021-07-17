@@ -7,9 +7,9 @@
 ## Usage
 
 ```ts
-import { Paystack } from "@technanimals/paystack";
+import { createClient } from "@technanimals/paystack";
 
-const paystack = new Paystack({
+const paystack = new createClient({
   clientSecret: "sk_...", // Use your test or production secret here
 });
 ```
